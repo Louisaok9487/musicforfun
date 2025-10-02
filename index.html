@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electric Vibe Composer</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Tone.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
+    <style>
+        /* Custom styles for a modern, electric look */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d0d1a; /* Very dark purple/blue */
+            color: #e0f2fe; /* Light blue/cyan text */
+        }
+        .composer-panel {
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .control-button {
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        /* State for ON button (General Glow) */
+        .on-state {
+            box-shadow: 0 0 20px rgba(74, 222, 128, 0.8), inset 0 0 10px rgba(74, 222, 128, 0.5); /* Emerald glow */
+            transform: scale(1.02);
+            border-color: #34d399;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <div class="composer-panel w-full max-w-4xl bg-gray-900/90 backdrop-blur-sm rounded-3xl p-6 md:p-10 border-4 border-violet-800/50 shadow-2xl">
+        
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-fuchsia-500 mb-1">
+                Electric Vibe Composer
+            </h1>
+            <p id="bpm-display" class="text-lg font-mono text-emerald-400">120 BPM</p>
+        </header>
+
+        <!-- Main Transport Control -->
+        <div class="mb-8 flex justify-center">
+            <button id="transport-toggle" class="px-8 py-3 rounded-xl text-lg font-extrabold shadow-lg transition-all transform hover:scale-[1.02] bg-fuchsia-600 text-white hover:bg-fuchsia-500 focus:outline-none focus:ring-4 focus:ring-fuchsia-400/50">
+                Start Audio
+            </button>
+        </div>
+
+        <h2 class="text-xl font-bold text-cyan-400 mb-4 border-b border-cyan-700 pb-1">Instrument Tracks (10 Total)</h2>
+        <!-- Instrument Track Controls - Changed to grid-cols-5 for 10 tracks -->
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+            
+            <!-- Group 1: Drums & Rhythm -->
+            <button id="kick-toggle" data-track="kick" class="control-button bg-violet-700 text-white py-3 rounded-xl border-2 border-violet-700 hover:bg-violet-600 active:scale-[0.98]">
+                <span class="text-sm block font-semibold">Kick Drum</span>
+            </button>
+            <button id="hat-toggle" data-track="hat" class="control-button bg-cyan-700 text-white py-3 rounded-xl border-2 border-cyan-700 hover:bg-cyan-600 active:scale-[0.98]">
+                <span class="text-sm block font-semibold">Hi-Hat</span>
+            </button>
+            <button id="clap-toggle" data-track="clap" class="control-button bg-red-700 text-white py-3 rounded-xl border-2 border-red-700 hover:bg-red-600 active:scale-[0.98]">
+                <span class="text-sm block font-semibold">Snare/Clap</span>
+            </button>
+            <button id="perc-toggle" data-track="perc" class="control-button bg-yellow-700 text-white py-3 rounded-xl border-2 border-yellow-700 hover:bg-yellow-600 active:scale-[0.98]">
+                <span class="text-sm block font-semibold">Percussion</span>
+            </button>
+            
+            <!-- Group 2: Bass & Synths -->
+            <button id="bass-toggle" data-track="bass" class="control-button bg-emerald-700 text-white py-3 rounded-xl border-2 border-emerald-700 hover:bg-emerald-600 active:scale-[0.98]">
+                <span class="text-sm block font-semibold">Sub Bass</span>
+            </button>
+            <button id="vibe-toggle" data-track="vibe" class="control-button bg-pink-700 text-white py-3 rounded-xl border-2 border-pink-700 hover:bg-pink-600 active:scale-[0.98]">
+                <span class="text-sm block font-semibold">Vibe Chord</span>
+            </button>
+            <button id="arp-toggle" data-track="arp" class="control-button bg-orange-700 text-white py-3 rounded-xl border-2 border-orange-700 hover:bg-orange-600 active:scale-[0.98]">
+                <span class="text-sm block font-semibold">Arpeggiator</span>
+            </button>
+            <button id="pad-toggle" data-track="pad" class="control-button bg-indigo-700 text-white py-3 rounded-xl border-2 border-indigo-700 hover:bg-indigo-600 active:scale-[0.98]">
+                <span class="text-sm block font-semibold">Ambient Pad</span>
+            </button>
+            <button id="pluck-toggle" data-track="pluck" class="control-button bg-lime-700 text-white py-3 rounded-xl border-2 border-lime-700 hover:bg-lime-600 active:scale-[0.98]">
+                <span class="text-sm block font-semibold">Pluck Lead</span>
+            </button>
+            <button id="fx-toggle" data-track="fx" class="control-button bg-fuchsia-700 text-white py-3 rounded-xl border-2 border-fuchsia-700 hover:bg-fuchsia-600 active:scale-[0.98]">
+                <span class="text-sm block font-semibold">Riser FX</span>
+            </button>
+
+        </div>
+
+        <h2 class="text-xl font-bold text-fuchsia-400 mb-4 border-b border-fuchsia-700 pb-1">Audio Effects (x10)</h2>
+        <!-- Effect Controls -->
+        <div id="fx-panel" class="grid grid-cols-3 md:grid-cols-5 gap-3">
+            <!-- FX buttons will be generated here -->
+        </div>
+
+        <!-- Status/Instructions Area -->
+        <div id="status-message" class="mt-8 text-center text-sm text-gray-500">
+            Click 'Start Audio' to enable the track controls.
+        </div>
+
+    </div>
+
+    <script>
+        // Use an IIFE (Immediately Invoked Function Expression) to contain variables
+        (function() {
+            // --- Global State and Constants ---
+            const transportToggleBtn = document.getElementById('transport-toggle');
+            const statusMessage = document.getElementById('status-message');
+            const bpmDisplay = document.getElementById('bpm-display');
+            const fxPanel = document.getElementById('fx-panel');
+
+            // Initial BPM
+            let CURRENT_BPM = 120;
+            const MIN_BPM = 90;
+            const MAX_BPM = 150;
+
+            const TRACK_STATE = {
+                kick: false,
+                hat: false,
+                bass: false,
+                vibe: false,
+                // NEW TRACKS
+                clap: false,
+                perc: false,
+                arp: false,
+                pad: false,
+                pluck: false,
+                fx: false,
+                // END NEW TRACKS
+                transportRunning: false
+            };
+            
+            // Tone.js Instruments and FX
+            let kick, hat, bassSynth, vibeSynth, globalReverb;
+            let clap, percSynth, arpSynth, padSynth, pluckSynth, fxNoise; // fxNoise will be the Tone.Noise source
+            let kickLoop, hatLoop, bassLoop, vibeLoop;
+            let clapLoop, percLoop, arpLoop, padLoop, pluckLoop, fxLoop; // NEW LOOPS
+
+            // 10 Audio Effects
+            const FX_LIST = [
+                { name: 'Chorus', id: 'fx-chorus', instance: null, isActive: false, color: 'blue-500' },
+                { name: 'Delay', id: 'fx-delay', instance: null, isActive: false, color: 'sky-500' },
+                { name: 'Distortion', id: 'fx-distortion', instance: null, isActive: false, color: 'yellow-500' },
+                { name: 'Phaser', id: 'fx-phaser', instance: null, isActive: false, color: 'pink-500' },
+                { name: 'Tremolo', id: 'fx-tremolo', instance: null, isActive: false, color: 'purple-500' },
+                { name: 'BitCrusher', id: 'fx-bitcrush', instance: null, isActive: false, color: 'teal-500' },
+                { name: 'Panner', id: 'fx-panner', instance: null, isActive: false, color: 'orange-500' },
+                { name: 'Compressor', id: 'fx-comp', instance: null, isActive: false, color: 'red-500' },
+                { name: 'AutoFilter', id: 'fx-autofilter', instance: null, isActive: false, color: 'lime-500' },
+                { name: 'JcReverb', id: 'fx-jcreverb', instance: null, isActive: false, color: 'indigo-500' },
+            ];
+
+            let masterFXChain = []; // Array to hold the connected effect chain
+
+            // --- Tone.js Setup and Initialisation ---
+
+            function setupTone() {
+                // 1. Global Reverb (for atmosphere, connected first)
+                globalReverb = new Tone.Reverb({
+                    decay: 4,
+                    preDelay: 0.01,
+                    wet: 0.3
+                });
+
+                // 2. Initialize 10 FX and build the chain (unchanged)
+                FX_LIST.forEach(fx => {
+                    switch (fx.name) {
+                        case 'Chorus': fx.instance = new Tone.Chorus(4, 2.5, 0.5).set({ wet: 0 }); break;
+                        case 'Delay': fx.instance = new Tone.PingPongDelay("8n", 0.3).set({ wet: 0 }); break;
+                        case 'Distortion': fx.instance = new Tone.Distortion(0.8).set({ wet: 0 }); break;
+                        case 'Phaser': fx.instance = new Tone.Phaser({ frequency: 0.5, octaves: 3, baseFrequency: 350 }).set({ wet: 0 }); break;
+                        case 'Tremolo': fx.instance = new Tone.Tremolo(9, 0.75).start().set({ wet: 0 }); break;
+                        case 'BitCrusher': fx.instance = new Tone.BitCrusher(8).set({ wet: 0 }); break;
+                        case 'Panner': fx.instance = new Tone.Panner(0.5).set({ wet: 0 }); break; // Panning effect
+                        case 'Compressor': fx.instance = new Tone.Compressor(-20, 3); fx.instance.bypass = true; break; // Use bypass for compressor
+                        case 'AutoFilter': fx.instance = new Tone.AutoFilter("4n").set({ wet: 0 }).start(); break;
+                        case 'JcReverb': fx.instance = new Tone.JCReverb(0.6).set({ wet: 0 }); break;
+                    }
+                    if (fx.instance) masterFXChain.push(fx.instance);
+                });
+                
+                // 3. Chain the effects: Reverb -> FX1 -> FX2 -> ... -> Destination
+                let lastNode = globalReverb;
+                for (const fx of masterFXChain) {
+                    lastNode.connect(fx);
+                    lastNode = fx;
+                }
+                lastNode.toDestination(); // Connect the end of the chain to the speakers
+
+                // 4. Initialize Instruments (Original 4)
+                kick = new Tone.MembraneSynth({ pitchDecay: 0.05, octaves: 10, envelope: { attack: 0.001, decay: 0.4, sustain: 0.01, release: 1.4 } }).connect(globalReverb);
+                kick.volume.value = -3;
+                hat = new Tone.NoiseSynth({ noise: { type: "white" }, envelope: { attack: 0.001, decay: 0.1, sustain: 0.005, release: 0.1 } }).connect(globalReverb).set({ volume: -10 });
+                bassSynth = new Tone.MonoSynth({ oscillator: { type: "square" }, envelope: { attack: 0.005, decay: 0.3, sustain: 0.1, release: 0.5 } }).connect(globalReverb).set({ volume: -6 });
+                vibeSynth = new Tone.PolySynth(Tone.Synth, { oscillator: { type: "sawtooth" }, envelope: { attack: 2, decay: 1, sustain: 0.7, release: 4 } }).connect(globalReverb).set({ volume: -12 });
+                
+                // 5. Initialize NEW Instruments
+                clap = new Tone.NoiseSynth({
+                    noise: { type: "pink" },
+                    envelope: { attack: 0.005, decay: 0.2, sustain: 0, release: 0.05 }
+                }).connect(globalReverb).set({ volume: -5 });
+
+                percSynth = new Tone.FMSynth({
+                    harmonicity: 3.01,
+                    modulationIndex: 14,
+                    envelope: { attack: 0.001, decay: 0.4, sustain: 0.01, release: 0.05 },
+                    modulation: { type: "square" }
+                }).connect(globalReverb).set({ volume: -10 });
+
+                arpSynth = new Tone.Synth({
+                    oscillator: { type: "triangle" },
+                    envelope: { attack: 0.01, decay: 0.1, sustain: 0.2, release: 0.5 }
+                }).connect(globalReverb).set({ volume: -8 });
+
+                padSynth = new Tone.PolySynth(Tone.Synth, {
+                    oscillator: { type: "sine" },
+                    envelope: { attack: 3, decay: 0.5, sustain: 0.3, release: 5 }
+                }).connect(globalReverb).set({ volume: -18 });
+
+                pluckSynth = new Tone.PluckSynth({
+                    attackNoise: 1,
+                    dampening: 4000,
+                    resonance: 0.9
+                }).connect(globalReverb).set({ volume: -10 });
+
+                // FX Noise: Sweeping Noise/Riser (FIXED: fxNoise is now the Noise source, which has the volume property)
+                fxNoise = new Tone.Noise("pink").start(); // Noise Source (has volume property)
+                
+                // Add a filter to sweep the noise
+                const fxFilter = new Tone.Filter(0, "lowpass").connect(globalReverb);
+                
+                fxNoise.connect(fxFilter); // Connect the noise source to the filter
+                fxNoise.volume.value = -100; // Keep the noise source silent initially
+
+                // Store the filter on the fxNoise object for access in the loop
+                fxNoise.filter = fxFilter; 
+
+                Tone.Transport.bpm.value = CURRENT_BPM;
+            }
+
+            // --- Instrument Loops ---
+
+            function setupLoops() {
+                // Kick: Simple four-on-the-floor
+                kickLoop = new Tone.Loop(time => {
+                    kick.triggerAttackRelease("C1", "8n", time);
+                }, "4n").start(0);
+                kickLoop.stop(); // Start stopped
+
+                // Hi-Hat: Off-beat 8ths
+                hatLoop = new Tone.Loop(time => {
+                    hat.triggerAttackRelease("16n", time);
+                }, "8n").start("8n"); // Start at 8th note offset
+                hatLoop.stop(); // Start stopped
+
+                // Bass: Simple, pulsing 4-bar pattern (C minor scale)
+                const bassNotes = ["C2", "G1", "A#1", "F1"];
+                bassLoop = new Tone.Sequence((time, note) => {
+                    bassSynth.triggerAttackRelease(note, "4n", time);
+                }, bassNotes, "1m").start(0);
+                bassLoop.stop(); // Start stopped
+
+                // Vibe: Sustained, atmospheric chord pattern
+                const vibeChords = [
+                    ["C4", "G4", "A#4"],
+                    [null], // rest
+                    ["D#4", "G4", "C5"],
+                    [null]
+                ];
+                vibeLoop = new Tone.Sequence((time, chord) => {
+                    if (chord) {
+                        vibeSynth.triggerAttackRelease(chord, "2n", time);
+                    }
+                }, vibeChords, "2m").start(0);
+                vibeLoop.stop(); // Start stopped
+
+                // NEW LOOPS
+
+                // Clap: On 2 and 4
+                clapLoop = new Tone.Loop(time => {
+                    clap.triggerAttackRelease("4n", time);
+                }, "2n").start("4n"); // Start on 2nd quarter note
+                clapLoop.stop();
+
+                // Percussion: Fast 16th note pattern
+                percLoop = new Tone.Sequence((time, step) => {
+                    // Check for stronger hits on quarters (0, 4, 8, 12)
+                    if (step === 0 || step === 4 || step === 8 || step === 12) {
+                         percSynth.triggerAttackRelease("C4", "32n", time, 1); // Stronger velocity
+                    } else {
+                         percSynth.triggerAttackRelease("C3", "64n", time, 0.7); // Lighter hits
+                    }
+                }, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "16n").start(0);
+                percLoop.stop();
+
+                // Arp: Fast, upward arpeggio
+                arpLoop = new Tone.Pattern(function(time, note){
+                    arpSynth.triggerAttackRelease(note, "16n", time);
+                }, ["C4", "E4", "G4", "A4"]).start(0);
+                arpLoop.interval = "8n"; // Trigger a 16th note arpeggio every 8th note
+                arpLoop.stop();
+
+                // Pad: Long, sustained chord progression (same as Vibe but slower)
+                const padChords = [
+                    ["C3", "G3", "A#3"],
+                    [null],
+                    ["D#3", "G3", "C4"],
+                    [null]
+                ];
+                padLoop = new Tone.Sequence((time, chord) => {
+                    if (chord) {
+                        padSynth.triggerAttackRelease(chord, "4m", time);
+                    }
+                }, padChords, "4m").start(0); // Trigger a new chord every 4 measures
+                padLoop.stop();
+
+                // Pluck: Rhythmic melodic line
+                const pluckNotes = ["C4", "G3", "A#3", "G3", "C4", "A#3", "G3", "F3"];
+                pluckLoop = new Tone.Sequence((time, note) => {
+                    pluckSynth.triggerAttackRelease(note, "8n", time);
+                }, pluckNotes, "4n").start("4n"); // Trigger note every quarter note, starting on the second beat
+                pluckLoop.stop();
+
+
+                // FX: Sweeping Riser (triggered once per 4 measures)
+                fxLoop = new Tone.Loop(time => {
+                    // Reset filter and volume at the start of the 4 bar loop
+                    // FIX: Use fxNoise.filter to access frequency and Q
+                    fxNoise.filter.frequency.setValueAtTime(100, time);
+                    fxNoise.filter.Q.setValueAtTime(0.5, time);
+                    fxNoise.volume.setValueAtTime(-100, time);
+
+                    // Sweep up the filter and Q over the first 2 measures
+                    fxNoise.filter.frequency.linearRampTo(8000, "2m", time);
+                    fxNoise.filter.Q.linearRampTo(10, "2m", time);
+
+                    // Turn noise on for the first 2 measures then off
+                    fxNoise.volume.linearRampTo(-5, "1m", time); // Fade up over 1 measure
+                    fxNoise.volume.linearRampTo(-100, "1m", time + Tone.Time("2m").toSeconds()); // Fade down over 1 measure
+                }, "4m").start(0);
+                fxLoop.stop();
+            }
+
+            // --- UI Functions ---
+
+            function updateButtonUI(id, isActive, colorClass = null) {
+                const btn = document.getElementById(id);
+                if (!btn) return;
+
+                // Remove previous color classes related to the fx
+                btn.className = btn.className.split(' ').filter(c => !c.match(/bg-(red|blue|sky|yellow|pink|purple|teal|orange|lime|indigo|violet|cyan|emerald|fuchsia)-\d\d\d/)).join(' ');
+
+                if (isActive) {
+                    btn.classList.add('on-state');
+                    if (colorClass) {
+                         btn.classList.add(`bg-${colorClass}`);
+                    } else {
+                        // Instrument specific colors (ON STATE)
+                        const track = btn.dataset.track;
+                        if (track === 'kick') btn.style.backgroundColor = '#7c3aed'; // Violet
+                        if (track === 'hat') btn.style.backgroundColor = '#06b6d4'; // Cyan
+                        if (track === 'bass') btn.style.backgroundColor = '#10b981'; // Emerald
+                        if (track === 'vibe') btn.style.backgroundColor = '#ec4899'; // Pink
+                        // NEW TRACK COLORS (ON STATE)
+                        if (track === 'clap') btn.style.backgroundColor = '#ef4444'; // Red-500
+                        if (track === 'perc') btn.style.backgroundColor = '#facc15'; // Yellow-500
+                        if (track === 'arp') btn.style.backgroundColor = '#f97316'; // Orange-500
+                        if (track === 'pad') btn.style.backgroundColor = '#6366f1'; // Indigo-500
+                        if (track === 'pluck') btn.style.backgroundColor = '#84cc16'; // Lime-500
+                        if (track === 'fx') btn.style.backgroundColor = '#d946ef'; // Fuchsia-500
+                    }
+                } else {
+                    btn.classList.remove('on-state');
+                    // Instrument specific colors back to original Tailwind classes (OFF STATE)
+                    if (!colorClass) {
+                        const track = btn.dataset.track;
+                        if (track === 'kick') btn.classList.add('bg-violet-700', 'hover:bg-violet-600');
+                        if (track === 'hat') btn.classList.add('bg-cyan-700', 'hover:bg-cyan-600');
+                        if (track === 'bass') btn.classList.add('bg-emerald-700', 'hover:bg-emerald-600');
+                        if (track === 'vibe') btn.classList.add('bg-pink-700', 'hover:bg-pink-600');
+                        
+                        // NEW TRACK COLORS (OFF STATE)
+                        if (track === 'clap') btn.classList.add('bg-red-700', 'hover:bg-red-600');
+                        if (track === 'perc') btn.classList.add('bg-yellow-700', 'hover:bg-yellow-600');
+                        if (track === 'arp') btn.classList.add('bg-orange-700', 'hover:bg-orange-600');
+                        if (track === 'pad') btn.classList.add('bg-indigo-700', 'hover:bg-indigo-600');
+                        if (track === 'pluck') btn.classList.add('bg-lime-700', 'hover:bg-lime-600');
+                        if (track === 'fx') btn.classList.add('bg-fuchsia-700', 'hover:bg-fuchsia-600');
+
+                    } else {
+                        btn.classList.add('bg-gray-700', 'hover:bg-gray-600');
+                    }
+                }
+            }
+            
+            // Update BPM
+            function updateBPM(change) {
+                let newBPM = CURRENT_BPM + change;
+                newBPM = Math.min(Math.max(newBPM, MIN_BPM), MAX_BPM); // Cap BPM
+                CURRENT_BPM = newBPM;
+                Tone.Transport.bpm.rampTo(newBPM, 0.5); // Smooth transition
+                bpmDisplay.textContent = `${Math.round(newBPM)} BPM`;
+            }
+
+            function toggleTrack(trackName) {
+                if (!TRACK_STATE.transportRunning) return;
+
+                const newState = !TRACK_STATE[trackName];
+                TRACK_STATE[trackName] = newState;
+
+                let loop;
+                switch(trackName) {
+                    case 'kick': loop = kickLoop; break;
+                    case 'hat': loop = hatLoop; break;
+                    case 'bass': loop = bassLoop; break;
+                    case 'vibe': loop = vibeLoop; break;
+                    // NEW TRACKS
+                    case 'clap': loop = clapLoop; break;
+                    case 'perc': loop = percLoop; break;
+                    case 'arp': loop = arpLoop; break;
+                    case 'pad': loop = padLoop; break;
+                    case 'pluck': loop = pluckLoop; break;
+                    case 'fx': loop = fxLoop; break;
+                    // END NEW TRACKS
+                }
+
+                if (loop) {
+                    if (newState) {
+                        loop.start(Tone.now());
+                        updateBPM(2); // Increase BPM
+                    } else {
+                        // Stop immediately
+                        loop.stop(); 
+                        updateBPM(-2); // Decrease BPM
+                    }
+                }
+                
+                updateButtonUI(`${trackName}-toggle`, newState);
+            }
+
+            function toggleFX(fxId) {
+                const fx = FX_LIST.find(f => f.id === fxId);
+                if (!fx || !TRACK_STATE.transportRunning) return;
+
+                fx.isActive = !fx.isActive;
+                
+                // Update the effect's mix or bypass setting
+                if (fx.name === 'Compressor') {
+                    // Compressor is bypassed, not wet/dry mixed
+                    fx.instance.bypass = !fx.isActive;
+                } else if (fx.instance.wet) {
+                    // All other effects use 'wet' (mix)
+                    // Schedule the change at the next transport beat for smooth transition
+                    fx.instance.wet.rampTo(fx.isActive ? 0.7 : 0, 0.5, Tone.now());
+                }
+                
+                updateButtonUI(fx.id, fx.isActive, fx.color.split('-')[0]);
+            }
+            
+            function createFXButtons() {
+                fxPanel.innerHTML = FX_LIST.map(fx => `
+                    <button id="${fx.id}" data-fx="${fx.id}" class="control-button bg-gray-700 text-white text-xs py-2 rounded-lg hover:bg-gray-600 active:scale-[0.98] border border-gray-600">
+                        ${fx.name}
+                    </button>
+                `).join('');
+
+                // Attach event listeners
+                FX_LIST.forEach(fx => {
+                    const btn = document.getElementById(fx.id);
+                    btn.addEventListener('click', () => toggleFX(fx.id));
+                });
+            }
+
+
+            // --- Event Handlers ---
+
+            async function handleTransportToggle() {
+                if (!TRACK_STATE.transportRunning) {
+                    // 1. Resume context and setup (Tone.start() must be called on user interaction)
+                    await Tone.start();
+                    if (!kick) {
+                        setupTone();
+                        setupLoops();
+                        createFXButtons();
+                    }
+
+                    // 2. Start the transport
+                    Tone.Transport.start();
+                    TRACK_STATE.transportRunning = true;
+                    
+                    // 3. Update UI
+                    transportToggleBtn.textContent = 'Stop Audio';
+                    transportToggleBtn.classList.remove('bg-fuchsia-600', 'hover:bg-fuchsia-500');
+                    transportToggleBtn.classList.add('bg-red-600', 'hover:bg-red-500');
+                    statusMessage.textContent = 'Composer is RUNNING. Toggle tracks and effects below.';
+
+                } else {
+                    // 1. Stop all tracks and transport
+                    Tone.Transport.stop();
+                    TRACK_STATE.transportRunning = false;
+                    
+                    // 2. Stop all individual loops and reset state
+                    kickLoop.stop();
+                    hatLoop.stop();
+                    bassLoop.stop();
+                    vibeLoop.stop();
+                    clapLoop.stop();
+                    percLoop.stop();
+                    arpLoop.stop();
+                    padLoop.stop();
+                    pluckLoop.stop();
+                    fxLoop.stop();
+                    
+                    // 3. Reset state for instruments and FX
+                    for (const track in TRACK_STATE) {
+                        if (track !== 'transportRunning') {
+                            TRACK_STATE[track] = false;
+                            updateButtonUI(`${track}-toggle`, false);
+                        }
+                    }
+                    FX_LIST.forEach(fx => {
+                        fx.isActive = false;
+                        if (fx.instance) {
+                            if (fx.name === 'Compressor') {
+                                fx.instance.bypass = true;
+                            } else if (fx.instance.wet) {
+                                fx.instance.wet.value = 0;
+                            }
+                        }
+                        updateButtonUI(fx.id, false, fx.color.split('-')[0]);
+                    });
+                    
+                    // Reset BPM
+                    CURRENT_BPM = 120;
+                    Tone.Transport.bpm.value = CURRENT_BPM;
+
+                    // 4. Update UI
+                    transportToggleBtn.textContent = 'Start Audio';
+                    transportToggleBtn.classList.remove('bg-red-600', 'hover:bg-red-500');
+                    transportToggleBtn.classList.add('bg-fuchsia-600', 'hover:bg-fuchsia-500');
+                    statusMessage.textContent = 'Composer is STOPPED. Click Start Audio to begin.';
+                    bpmDisplay.textContent = `${CURRENT_BPM} BPM`;
+                }
+            }
+            
+            function handleTrackClick(event) {
+                const track = event.currentTarget.dataset.track;
+                if (track) {
+                    toggleTrack(track);
+                }
+            }
+
+            // --- Initialization ---
+
+            transportToggleBtn.addEventListener('click', handleTransportToggle);
+            // Attach listeners to instrument buttons after they are selected from the DOM
+            document.querySelectorAll('[data-track]').forEach(button => {
+                button.addEventListener('click', handleTrackClick);
+            });
+            
+            // Initialise Tone.js but delay connecting to the FX chain until Tone.start() is called
+            setupTone();
+            setupLoops();
+            createFXButtons(); // Create buttons immediately so they are ready
+            
+        })();
+    </script>
+</body>
+</html>
