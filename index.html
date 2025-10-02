@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Electric Vibe Composer</title>
+    <title>Electric Vibe Composer (20 Tracks)</title>
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Load Tone.js -->
@@ -24,6 +24,8 @@
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
             border-radius: 0.75rem; /* rounded-xl */
+            font-size: 0.75rem; /* text-xs */
+            line-height: 1.2;
         }
         /* State for ON button (General Glow) */
         .on-state {
@@ -51,7 +53,7 @@
 </head>
 <body class="min-h-screen flex items-center justify-center p-2 sm:p-4">
 
-    <div class="composer-panel w-full max-w-4xl bg-gray-900/90 backdrop-blur-sm rounded-3xl p-6 md:p-10 border-4 border-violet-800/50 shadow-2xl">
+    <div class="composer-panel w-full max-w-6xl bg-gray-900/90 backdrop-blur-sm rounded-3xl p-6 md:p-10 border-4 border-violet-800/50 shadow-2xl">
         
         <header class="text-center mb-8">
             <h1 class="text-3xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-fuchsia-500 mb-2">
@@ -81,42 +83,37 @@
         </div>
 
 
-        <h2 class="text-xl font-bold text-cyan-400 mb-4 border-b border-cyan-700 pb-1">Instrument Tracks (10 Total)</h2>
-        <!-- Instrument Track Controls -->
-        <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 sm:gap-4 mb-8">
+        <h2 class="text-xl font-bold text-cyan-400 mb-4 border-b border-cyan-700 pb-1">Instrument Tracks (20 Total)</h2>
+        <!-- Instrument Track Controls - 20 buttons -->
+        <div class="grid grid-cols-4 sm:grid-cols-5 gap-2 sm:gap-3 mb-8">
             
-            <button id="kick-toggle" data-track="kick" class="control-button bg-violet-700 text-white py-3 border-2 border-violet-700 hover:bg-violet-600">
-                <span class="text-sm block font-semibold">Kick Drum</span>
-            </button>
-            <button id="hat-toggle" data-track="hat" class="control-button bg-cyan-700 text-white py-3 border-2 border-cyan-700 hover:bg-cyan-600">
-                <span class="text-sm block font-semibold">Hi-Hat</span>
-            </button>
-            <button id="clap-toggle" data-track="clap" class="control-button bg-red-700 text-white py-3 border-2 border-red-700 hover:bg-red-600">
-                <span class="text-sm block font-semibold">Snare/Clap</span>
-            </button>
-            <button id="perc-toggle" data-track="perc" class="control-button bg-yellow-700 text-white py-3 border-2 border-yellow-700 hover:bg-yellow-600">
-                <span class="text-sm block font-semibold">Percussion</span>
-            </button>
-            <button id="fx-toggle" data-track="fx" class="control-button bg-fuchsia-700 text-white py-3 border-2 border-fuchsia-700 hover:bg-fuchsia-600">
-                <span class="text-sm block font-semibold">Riser FX</span>
-            </button>
+            <!-- ROW 1 (Drums & Basic Percussion) -->
+            <button id="kick-toggle" data-track="kick" class="control-button bg-violet-700 text-white py-3 border-2 border-violet-700 hover:bg-violet-600">Kick Drum</button>
+            <button id="hat-toggle" data-track="hat" class="control-button bg-cyan-700 text-white py-3 border-2 border-cyan-700 hover:bg-cyan-600">Hi-Hat</button>
+            <button id="clap-toggle" data-track="clap" class="control-button bg-red-700 text-white py-3 border-2 border-red-700 hover:bg-red-600">Snare/Clap</button>
+            <button id="perc-toggle" data-track="perc" class="control-button bg-yellow-700 text-white py-3 border-2 border-yellow-700 hover:bg-yellow-600">Shutter Perc.</button>
+            <button id="rim-toggle" data-track="rim" class="control-button bg-lime-700 text-white py-3 border-2 border-lime-700 hover:bg-lime-600">Rimshot</button>
 
-            <!-- Second Row -->
-            <button id="bass-toggle" data-track="bass" class="control-button bg-emerald-700 text-white py-3 border-2 border-emerald-700 hover:bg-emerald-600">
-                <span class="text-sm block font-semibold">Sub Bass</span>
-            </button>
-            <button id="vibe-toggle" data-track="vibe" class="control-button bg-pink-700 text-white py-3 border-2 border-pink-700 hover:bg-pink-600">
-                <span class="text-sm block font-semibold">Vibe Chord</span>
-            </button>
-            <button id="arp-toggle" data-track="arp" class="control-button bg-orange-700 text-white py-3 border-2 border-orange-700 hover:bg-orange-600">
-                <span class="text-sm block font-semibold">Arpeggiator</span>
-            </button>
-            <button id="pad-toggle" data-track="pad" class="control-button bg-indigo-700 text-white py-3 border-2 border-indigo-700 hover:bg-indigo-600">
-                <span class="text-sm block font-semibold">Ambient Pad</span>
-            </button>
-            <button id="pluck-toggle" data-track="pluck" class="control-button bg-lime-700 text-white py-3 border-2 border-lime-700 hover:bg-lime-600">
-                <span class="text-sm block font-semibold">Pluck Lead</span>
-            </button>
+            <!-- ROW 2 (Bass & Melodic Rhythm) -->
+            <button id="bass-toggle" data-track="bass" class="control-button bg-emerald-700 text-white py-3 border-2 border-emerald-700 hover:bg-emerald-600">Sub Bass</button>
+            <button id="vibe-toggle" data-track="vibe" class="control-button bg-pink-700 text-white py-3 border-2 border-pink-700 hover:bg-pink-600">Vibe Chord</button>
+            <button id="arp-toggle" data-track="arp" class="control-button bg-orange-700 text-white py-3 border-2 border-orange-700 hover:bg-orange-600">Arpeggiator</button>
+            <button id="pluck-toggle" data-track="pluck" class="control-button bg-lime-700 text-white py-3 border-2 border-lime-700 hover:bg-lime-600">Pluck Lead</button>
+            <button id="lead-toggle" data-track="lead" class="control-button bg-blue-700 text-white py-3 border-2 border-blue-700 hover:bg-blue-600">Lead Saw</button>
+
+            <!-- ROW 3 (Ambient & Low End) -->
+            <button id="pad-toggle" data-track="pad" class="control-button bg-indigo-700 text-white py-3 border-2 border-indigo-700 hover:bg-indigo-600">Ambient Pad</button>
+            <button id="sub-toggle" data-track="sub" class="control-button bg-purple-700 text-white py-3 border-2 border-purple-700 hover:bg-purple-600">Sub Drop</button>
+            <button id="lfo-toggle" data-track="lfo" class="control-button bg-teal-700 text-white py-3 border-2 border-teal-700 hover:bg-teal-600">LFO Wobble</button>
+            <button id="organ-toggle" data-track="organ" class="control-button bg-gray-600 text-white py-3 border-2 border-gray-600 hover:bg-gray-500">Organ Stab</button>
+            <button id="vox-toggle" data-track="vox" class="control-button bg-amber-700 text-white py-3 border-2 border-amber-700 hover:bg-amber-600">Gated Vox</button>
+
+            <!-- ROW 4 (FX & Secondary Drums) -->
+            <button id="fx-toggle" data-track="fx" class="control-button bg-fuchsia-700 text-white py-3 border-2 border-fuchsia-700 hover:bg-fuchsia-600">Riser FX</button>
+            <button id="sweep-toggle" data-track="sweep" class="control-button bg-sky-700 text-white py-3 border-2 border-sky-700 hover:bg-sky-600">Noise Sweep</button>
+            <button id="tom-toggle" data-track="tom" class="control-button bg-brown-700 text-white py-3 border-2 border-brown-700 hover:bg-brown-600">Toms</button>
+            <button id="shaker-toggle" data-track="shaker" class="control-button bg-orange-500 text-white py-3 border-2 border-orange-500 hover:bg-orange-400">Shaker Loop</button>
+            <button id="cymbal-toggle" data-track="cymbal" class="control-button bg-gray-500 text-white py-3 border-2 border-gray-500 hover:bg-gray-400">Cymbal Crash</button>
         </div>
 
         <h2 class="text-xl font-bold text-fuchsia-400 mb-4 border-b border-fuchsia-700 pb-1">Audio Effects (x10)</h2>
@@ -150,20 +147,24 @@
             const MIN_BPM = 80;
             const MAX_BPM = 160;
 
+            // State for all 20 tracks
             const TRACK_STATE = {
-                kick: false, hat: false, bass: false, vibe: false, clap: false,
-                perc: false, arp: false, pad: false, pluck: false, fx: false,
+                kick: false, hat: false, bass: false, vibe: false, clap: false, perc: false, arp: false, pad: false, pluck: false, fx: false,
+                rim: false, shaker: false, sub: false, lead: false, sweep: false, vox: false, cymbal: false, tom: false, organ: false, lfo: false,
                 transportRunning: false
             };
             
             // Tone.js Instruments and FX
-            let kick, hat, bassSynth, vibeSynth, globalReverb;
-            let clap, percSynth, arpSynth, padSynth, pluckSynth, fxNoise;
-            let kickLoop, hatLoop, bassLoop, vibeLoop;
-            let clapLoop, percLoop, arpLoop, padLoop, pluckLoop, fxLoop;
-            let visualLoop; // Dedicated loop for visual updates
+            let kick, hat, bassSynth, vibeSynth, globalReverb; // Existing 5
+            let clap, percSynth, arpSynth, padSynth, pluckSynth, fxNoise; // Existing 5
+            let rimSynth, shakerNoise, subSynth, leadSynth, sweepNoise, voxSynth, cymbalSynth, tomSynth, organSynth, lfoSynth; // New 10
 
-            // 10 Audio Effects
+            // Tone.js Loops
+            let kickLoop, hatLoop, bassLoop, vibeLoop, clapLoop, percLoop, arpLoop, padLoop, pluckLoop, fxLoop; // Existing 10
+            let rimLoop, shakerLoop, subLoop, leadLoop, sweepLoop, voxLoop, cymbalLoop, tomLoop, organLoop, lfoLoop; // New 10
+            let visualLoop; 
+
+            // 10 Audio Effects (same as previous iteration)
             const FX_LIST = [
                 { name: 'Chorus', id: 'fx-chorus', instance: null, isActive: false, color: 'blue-500' },
                 { name: 'Delay', id: 'fx-delay', instance: null, isActive: false, color: 'sky-500' },
@@ -182,10 +183,9 @@
             // --- Tone.js Setup and Initialisation ---
 
             function setupTone() {
-                // 1. Global Reverb (for atmosphere, connected first)
+                // 1. Global Reverb & FX Chain Setup (same as previous)
                 globalReverb = new Tone.Reverb({ decay: 4, preDelay: 0.01, wet: 0.3 });
 
-                // 2. Initialize 10 FX and build the chain
                 FX_LIST.forEach(fx => {
                     switch (fx.name) {
                         case 'Chorus': fx.instance = new Tone.Chorus(4, 2.5, 0.5).set({ wet: 0 }); break;
@@ -202,7 +202,6 @@
                     if (fx.instance) masterFXChain.push(fx.instance);
                 });
                 
-                // 3. Chain the effects: Reverb -> FX1 -> FX2 -> ... -> Destination
                 let lastNode = globalReverb;
                 for (const fx of masterFXChain) {
                     lastNode.connect(fx);
@@ -210,7 +209,9 @@
                 }
                 lastNode.toDestination();
 
-                // 4. Initialize Instruments
+                // 2. Initialize 20 Instruments
+
+                // --- Existing 10 Instruments ---
                 kick = new Tone.MembraneSynth({ pitchDecay: 0.05, octaves: 10, envelope: { attack: 0.001, decay: 0.4, sustain: 0.01, release: 1.4 } }).connect(globalReverb).set({ volume: -3 });
                 hat = new Tone.NoiseSynth({ noise: { type: "white" }, envelope: { attack: 0.001, decay: 0.1, sustain: 0.005, release: 0.1 } }).connect(globalReverb).set({ volume: -10 });
                 bassSynth = new Tone.MonoSynth({ oscillator: { type: "square" }, envelope: { attack: 0.005, decay: 0.3, sustain: 0.1, release: 0.5 } }).connect(globalReverb).set({ volume: -6 });
@@ -220,20 +221,39 @@
                 arpSynth = new Tone.Synth({ oscillator: { type: "triangle" }, envelope: { attack: 0.01, decay: 0.1, sustain: 0.2, release: 0.5 } }).connect(globalReverb).set({ volume: -8 });
                 padSynth = new Tone.PolySynth(Tone.Synth, { oscillator: { type: "sine" }, envelope: { attack: 3, decay: 0.5, sustain: 0.3, release: 5 } }).connect(globalReverb).set({ volume: -18 });
                 pluckSynth = new Tone.PluckSynth({ attackNoise: 1, dampening: 4000, resonance: 0.9 }).connect(globalReverb).set({ volume: -10 });
-
-                // FX Noise (Riser)
-                fxNoise = new Tone.Noise("pink").start();
+                fxNoise = new Tone.Noise("pink").start(); // Riser FX noise source
                 const fxFilter = new Tone.Filter(0, "lowpass").connect(globalReverb);
                 fxNoise.connect(fxFilter);
                 fxNoise.volume.value = -100;
                 fxNoise.filter = fxFilter; 
+                
+                // --- New 10 Instruments ---
+                rimSynth = new Tone.NoiseSynth({ noise: { type: "pink" }, envelope: { attack: 0.001, decay: 0.05, sustain: 0, release: 0.05 } }).connect(globalReverb).set({ volume: -8 });
+                shakerNoise = new Tone.NoiseSynth({ noise: { type: "white" }, envelope: { attack: 0.001, decay: 0.02, sustain: 0, release: 0.01 } }).connect(globalReverb).set({ volume: -15 });
+                subSynth = new Tone.MonoSynth({ oscillator: { type: "sine" }, envelope: { attack: 0.01, decay: 1, sustain: 0.5, release: 1.5 } }).connect(globalReverb).set({ volume: -10 });
+                leadSynth = new Tone.DuoSynth({ voice0: { oscillator: { type: "sawtooth" } }, voice1: { oscillator: { type: "square" } } }).connect(globalReverb).set({ volume: -10 });
+                
+                sweepNoise = new Tone.Noise("pink").start();
+                const sweepFilter = new Tone.AutoFilter({ frequency: "8n", baseFrequency: 200, octaves: 8, filter: { type: "bandpass" } }).connect(globalReverb).start();
+                sweepNoise.connect(sweepFilter);
+                sweepNoise.volume.value = -12;
+                sweepNoise.filter = sweepFilter; // Attach filter for easy access
+
+                voxSynth = new Tone.MetalSynth({ frequency: 200, envelope: { attack: 0.001, decay: 0.1, release: 0.1 } }).connect(globalReverb).set({ volume: -10 });
+                cymbalSynth = new Tone.MetalSynth({ frequency: 1000, envelope: { attack: 0.001, decay: 1.5, release: 1.5 }, harmonicity: 5.1, modulationIndex: 32 }).connect(globalReverb).set({ volume: -8 });
+                tomSynth = new Tone.MembraneSynth({ pitchDecay: 0.08, octaves: 5, envelope: { attack: 0.001, decay: 0.3, sustain: 0.01, release: 0.5 } }).connect(globalReverb).set({ volume: -5 });
+                organSynth = new Tone.PolySynth(Tone.AMSynth, { oscillator: { type: "triangle" }, envelope: { attack: 0.01, decay: 0.5, sustain: 0.4, release: 1 } }).connect(globalReverb).set({ volume: -15 });
+                
+                lfoSynth = new Tone.Synth({ oscillator: { type: "sawtooth" }, envelope: { attack: 0.01, decay: 0.5, sustain: 0.9, release: 0.5 } }).connect(globalReverb).set({ volume: -8 });
+                const lfo = new Tone.LFO(8, 20, 1000).connect(lfoSynth.frequency).start(); // LFO wobbles the pitch
 
                 Tone.Transport.bpm.value = CURRENT_BPM;
             }
 
-            // --- Loops Setup ---
+            // --- Loops Setup (20 total) ---
 
             function setupLoops() {
+                // --- Existing 10 Loops ---
                 kickLoop = new Tone.Loop(time => { kick.triggerAttackRelease("C1", "8n", time); }, "4n").start(0);
                 hatLoop = new Tone.Loop(time => { hat.triggerAttackRelease("16n", time); }, "8n").start("8n"); 
                 const bassNotes = ["C2", "G1", "A#1", "F1"];
@@ -252,9 +272,7 @@
                 padLoop = new Tone.Sequence((time, chord) => { if (chord) { padSynth.triggerAttackRelease(chord, "4m", time); } }, padChords, "4m").start(0);
                 const pluckNotes = ["C4", "G3", "A#3", "G3", "C4", "A#3", "G3", "F3"];
                 pluckLoop = new Tone.Sequence((time, note) => { pluckSynth.triggerAttackRelease(note, "8n", time); }, pluckNotes, "4n").start("4n");
-
-                // FX Loop (Riser)
-                fxLoop = new Tone.Loop(time => {
+                fxLoop = new Tone.Loop(time => { // Riser FX loop
                     fxNoise.filter.frequency.setValueAtTime(100, time);
                     fxNoise.filter.Q.setValueAtTime(0.5, time);
                     fxNoise.volume.setValueAtTime(-100, time);
@@ -264,11 +282,52 @@
                     fxNoise.volume.linearRampTo(-100, "1m", time + Tone.Time("2m").toSeconds());
                 }, "4m").start(0);
 
+                // --- New 10 Loops ---
+                rimLoop = new Tone.Sequence((time, step) => {
+                    if (step === 3 || step === 7 || step === 11 || step === 15) {
+                        rimSynth.triggerAttackRelease("16n", time);
+                    }
+                }, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "16n").start("8n"); // Off-beat rhythm
+
+                shakerLoop = new Tone.Loop(time => { shakerNoise.triggerAttackRelease("64n", time); }, "32n").start("16n"); // Fast, constant shaker
+
+                subLoop = new Tone.Loop(time => { subSynth.triggerAttackRelease("C0", "1m", time); }, "4m").start(0); // Long, slow sub bass
+
+                const leadNotes = ["C5", null, "A#4", null, "G4", null, "A#4", null];
+                leadLoop = new Tone.Sequence((time, note) => { 
+                    if (note) leadSynth.triggerAttackRelease(note, "8n", time);
+                }, leadNotes, "4n").start("8n");
+
+                sweepLoop = new Tone.Loop(time => {
+                    sweepNoise.filter.frequency.setValueAtTime(100, time);
+                    sweepNoise.filter.frequency.linearRampTo(10000, "1m", time);
+                }, "2m").start("1m"); // Filter sweep every 2 bars
+
+                voxLoop = new Tone.Sequence((time, step) => {
+                    if (step % 2 === 0) voxSynth.triggerAttackRelease("4n", time);
+                }, [0, 1, 2, 3, 4, 5, 6, 7], "8n").start("16n"); // Gated metallic rhythm
+
+                cymbalLoop = new Tone.Loop(time => { cymbalSynth.triggerAttackRelease("1m", time); }, "4m").start(0); // Crash every 4 bars
+
+                tomLoop = new Tone.Sequence((time, note) => {
+                    if (note) tomSynth.triggerAttackRelease(note, "8n", time);
+                }, ["G2", null, "D2", null, "C2", null, "G2", null], "4n").start("2n"); // Simple tom fill
+
+                const organChords = [["C4", "E4", "G4"], [null], [null], [null]];
+                organLoop = new Tone.Sequence((time, chord) => { 
+                    if (chord) organSynth.triggerAttackRelease(chord, "4n", time);
+                }, organChords, "1m").start("2n"); // Simple stab on 2nd beat
+
+                lfoLoop = new Tone.Loop(time => { 
+                    lfoSynth.triggerAttackRelease("C3", "1m", time); 
+                }, "1m").start("4n"); // Long note with wobble LFO
+
                 // Stop all loops initially
-                [kickLoop, hatLoop, bassLoop, vibeLoop, clapLoop, percLoop, arpLoop, padLoop, pluckLoop, fxLoop].forEach(loop => loop.stop());
+                [kickLoop, hatLoop, bassLoop, vibeLoop, clapLoop, percLoop, arpLoop, padLoop, pluckLoop, fxLoop, 
+                 rimLoop, shakerLoop, subLoop, leadLoop, sweepLoop, voxLoop, cymbalLoop, tomLoop, organLoop, lfoLoop].forEach(loop => loop.stop());
             }
 
-            // --- Sequencer UI Logic ---
+            // --- Sequencer UI Logic (Same as previous, handles 64 steps) ---
 
             function renderSequencerGrid() {
                 // Generates 64 steps (16 per measure)
@@ -286,7 +345,6 @@
                         classes += ' bg-gray-700/50';
                     }
                     
-                    // Add small gap after every measure
                     const marginClass = (i % 16 === 15 && i < 63) ? 'mr-3 md:mr-4' : 'mr-1';
                     
                     html += `<div id="step-${i}" class="${classes} ${marginClass}"></div>`;
@@ -322,41 +380,45 @@
 
             // --- UI Functions ---
 
-            function updateButtonUI(id, isActive, colorClass = null) {
+            function updateButtonUI(id, isActive, baseColor = null) {
                 const btn = document.getElementById(id);
                 if (!btn) return;
 
-                btn.className = btn.className.split(' ').filter(c => !c.match(/bg-(red|blue|sky|yellow|pink|purple|teal|orange|lime|indigo|violet|cyan|emerald|fuchsia)-\d\d\d/)).join(' ');
-                btn.classList.remove('on-state', 'bg-gray-700', 'hover:bg-gray-600');
+                // Remove existing bg, hover, and border classes to apply new state correctly
+                const colorClasses = ['bg-violet', 'bg-cyan', 'bg-red', 'bg-yellow', 'bg-lime', 'bg-emerald', 'bg-pink', 'bg-orange', 'bg-blue', 'bg-indigo', 'bg-purple', 'bg-teal', 'bg-gray', 'bg-amber', 'bg-fuchsia', 'bg-sky', 'bg-brown'];
+                
+                btn.className = btn.className.split(' ').filter(c => 
+                    !c.startsWith('bg-') && !c.startsWith('hover:bg-') && !c.startsWith('border-')
+                ).join(' ');
+
+                btn.classList.remove('on-state');
+
+                // Determine base color from data-track if not provided (for non-FX buttons)
+                if (!baseColor) {
+                    const track = btn.dataset.track;
+                    baseColor = (
+                        track === 'kick' ? 'violet' : track === 'hat' ? 'cyan' : track === 'clap' ? 'red' :
+                        track === 'perc' ? 'yellow' : track === 'rim' ? 'lime' : track === 'bass' ? 'emerald' :
+                        track === 'vibe' ? 'pink' : track === 'arp' ? 'orange' : track === 'pluck' ? 'lime' :
+                        track === 'lead' ? 'blue' : track === 'pad' ? 'indigo' : track === 'sub' ? 'purple' :
+                        track === 'lfo' ? 'teal' : track === 'organ' ? 'gray' : track === 'vox' ? 'amber' :
+                        track === 'fx' ? 'fuchsia' : track === 'sweep' ? 'sky' : track === 'tom' ? 'brown' :
+                        track === 'shaker' ? 'orange' : track === 'cymbal' ? 'gray' : 'gray'
+                    );
+                }
+
 
                 if (isActive) {
                     btn.classList.add('on-state');
-                    // Use a slightly lighter/more vibrant color for the active state background
-                    const track = btn.dataset.track;
-                    const baseColor = colorClass ? colorClass.split('-')[0] : (
-                        track === 'kick' ? 'violet' : track === 'hat' ? 'cyan' : track === 'bass' ? 'emerald' : track === 'vibe' ? 'pink' :
-                        track === 'clap' ? 'red' : track === 'perc' ? 'yellow' : track === 'arp' ? 'orange' : track === 'pad' ? 'indigo' :
-                        track === 'pluck' ? 'lime' : track === 'fx' ? 'fuchsia' : 'gray'
-                    );
+                    // Active state uses a lighter shade (e.g., -500)
                     btn.classList.add(`bg-${baseColor}-500`);
+                    btn.classList.add(`border-${baseColor}-500`);
                 } else {
-                    // Use the darker color for the off state background
-                    if (!colorClass) {
-                        const track = btn.dataset.track;
-                        if (track === 'kick') btn.classList.add('bg-violet-700', 'hover:bg-violet-600', 'border-violet-700');
-                        else if (track === 'hat') btn.classList.add('bg-cyan-700', 'hover:bg-cyan-600', 'border-cyan-700');
-                        else if (track === 'bass') btn.classList.add('bg-emerald-700', 'hover:bg-emerald-600', 'border-emerald-700');
-                        else if (track === 'vibe') btn.classList.add('bg-pink-700', 'hover:bg-pink-600', 'border-pink-700');
-                        else if (track === 'clap') btn.classList.add('bg-red-700', 'hover:bg-red-600', 'border-red-700');
-                        else if (track === 'perc') btn.classList.add('bg-yellow-700', 'hover:bg-yellow-600', 'border-yellow-700');
-                        else if (track === 'arp') btn.classList.add('bg-orange-700', 'hover:bg-orange-600', 'border-orange-700');
-                        else if (track === 'pad') btn.classList.add('bg-indigo-700', 'hover:bg-indigo-600', 'border-indigo-700');
-                        else if (track === 'pluck') btn.classList.add('bg-lime-700', 'hover:bg-lime-600', 'border-lime-700');
-                        else if (track === 'fx') btn.classList.add('bg-fuchsia-700', 'hover:bg-fuchsia-600', 'border-fuchsia-700');
-                    } else {
-                        btn.classList.add('bg-gray-700', 'hover:bg-gray-600', 'border-gray-600');
-                    }
-                    btn.style.backgroundColor = ''; // Clear inline style if set
+                    // Off state uses a darker shade (e.g., -700) and hover
+                    const shade = (baseColor === 'gray' || baseColor === 'brown' || baseColor === 'orange') ? '600' : '700'; // Make dark colours slightly lighter in off state
+                    btn.classList.add(`bg-${baseColor}-${shade}`);
+                    btn.classList.add(`hover:bg-${baseColor}-${shade === '700' ? '600' : '500'}`);
+                    btn.classList.add(`border-2`, `border-${baseColor}-${shade}`);
                 }
             }
             
@@ -377,10 +439,17 @@
 
                 let loop;
                 switch(trackName) {
+                    // Existing 10
                     case 'kick': loop = kickLoop; break; case 'hat': loop = hatLoop; break; case 'bass': loop = bassLoop; break; 
                     case 'vibe': loop = vibeLoop; break; case 'clap': loop = clapLoop; break; case 'perc': loop = percLoop; break;
                     case 'arp': loop = arpLoop; break; case 'pad': loop = padLoop; break; case 'pluck': loop = pluckLoop; break;
                     case 'fx': loop = fxLoop; break;
+                    // New 10
+                    case 'rim': loop = rimLoop; break; case 'shaker': loop = shakerLoop; break; case 'sub': loop = subLoop; break;
+                    case 'lead': loop = leadLoop; break; case 'sweep': loop = sweepLoop; break; case 'vox': loop = voxLoop; break;
+                    case 'cymbal': loop = cymbalLoop; break; case 'tom': loop = tomLoop; break; case 'organ': loop = organLoop; break;
+                    case 'lfo': loop = lfoLoop; break;
+                    default: return;
                 }
 
                 if (loop) {
@@ -432,11 +501,10 @@
                     if (!kick) {
                         setupTone();
                         setupLoops();
-                        renderSequencerGrid(); // Render grid when starting for the first time
+                        renderSequencerGrid();
                         createFXButtons();
                     }
 
-                    // Start the visual loop
                     setupVisualLoop();
                     
                     // Reset step count and start transport
@@ -448,23 +516,28 @@
                     transportToggleBtn.textContent = 'Stop Audio';
                     transportToggleBtn.classList.remove('bg-fuchsia-600', 'hover:bg-fuchsia-500');
                     transportToggleBtn.classList.add('bg-red-600', 'hover:bg-red-500');
-                    statusMessage.textContent = 'Composer is RUNNING. Make a VIBE!';
+                    statusMessage.textContent = 'Composer is RUNNING. Get that VIBE GOING!';
 
                 } else {
                     Tone.Transport.stop();
                     TRACK_STATE.transportRunning = false;
                     
                     // Stop loops
-                    [kickLoop, hatLoop, bassLoop, vibeLoop, clapLoop, percLoop, arpLoop, padLoop, pluckLoop, fxLoop].forEach(loop => loop.stop());
+                    [kickLoop, hatLoop, bassLoop, vibeLoop, clapLoop, percLoop, arpLoop, padLoop, pluckLoop, fxLoop, 
+                     rimLoop, shakerLoop, subLoop, leadLoop, sweepLoop, voxLoop, cymbalLoop, tomLoop, organLoop, lfoLoop].forEach(loop => loop.stop());
                     if (visualLoop) visualLoop.stop();
 
-                    // Reset state and UI
+                    // Reset track state and UI for all 20 tracks
                     for (const track in TRACK_STATE) {
                         if (track !== 'transportRunning') {
                             TRACK_STATE[track] = false;
-                            updateButtonUI(`${track}-toggle`, false);
+                            const btnId = `${track}-toggle`;
+                            if (document.getElementById(btnId)) {
+                                updateButtonUI(btnId, false);
+                            }
                         }
                     }
+                    // Reset FX state
                     FX_LIST.forEach(fx => {
                         fx.isActive = false;
                         if (fx.instance) {
@@ -496,14 +569,17 @@
             bpmUpBtn.addEventListener('click', () => { if (TRACK_STATE.transportRunning) updateBPM(5); });
             bpmDownBtn.addEventListener('click', () => { if (TRACK_STATE.transportRunning) updateBPM(-5); });
 
+            // Attach event listeners for all 20 track buttons
             document.querySelectorAll('[data-track]').forEach(button => {
+                // Initialise button appearance (off state)
+                updateButtonUI(button.id, false); 
                 button.addEventListener('click', (event) => toggleTrack(event.currentTarget.dataset.track));
             });
             
             // Initialise Tone.js but delay connecting to the FX chain until Tone.start() is called
             setupTone();
             setupLoops();
-            renderSequencerGrid(); // Render the grid so it's visible even when stopped
+            renderSequencerGrid(); 
             createFXButtons(); 
             
         })();
